@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 import os
-import argparse
 import matplotlib.pyplot as plt
 
 def plot_and_save_distributions(df, set_name, output_dir):
@@ -88,7 +87,7 @@ def split_dataset_by_feh(continuum_path, normalized_path, labels_path, output_di
     print(f"Test set size: {len(test_obsids_list)}")
 
     # --- Ensure consistent ordering across all files for each set ---
-    print("\nEnsuring consistent order of samples across all files...")
+    print("Ensuring consistent order of samples across all files...")
     
     # Filter and Sort Train Set
     train_labels = labels_df[labels_df['obsid'].isin(train_obsids_list)].set_index('obsid').loc[train_obsids_list].reset_index()
@@ -111,7 +110,7 @@ def split_dataset_by_feh(continuum_path, normalized_path, labels_path, output_di
     plot_and_save_distributions(test_labels, 'test', test_dir)
 
     # Save CSV files
-    print("\nSaving split CSV files...")
+    print("Saving split CSV files...")
     train_continuum.to_csv(os.path.join(train_dir, 'continuum.csv'), index=False)
     val_continuum.to_csv(os.path.join(val_dir, 'continuum.csv'), index=False)
     test_continuum.to_csv(os.path.join(test_dir, 'continuum.csv'), index=False)
@@ -123,16 +122,3 @@ def split_dataset_by_feh(continuum_path, normalized_path, labels_path, output_di
     test_labels.to_csv(os.path.join(test_dir, 'labels.csv'), index=False)
     
     print("All files saved successfully.")
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Split dataset and plot label distributions.')
-    parser.add_argument('--continuum_path', type=str, required=True, help='Path to the continuum spectra CSV file.')
-    parser.add_argument('--normalized_path', type=str, required=True, help='Path to the normalized spectra CSV file.')
-    parser.add_argument('--labels_path', type=str, required=True, help='Path to the labels CSV file.')
-    parser.add_argument('--output_dir', type=str, required=True, help='Directory to save the output files and plots.')
-    args = parser.parse_args()
-
-    if not all(os.path.exists(p) for p in [args.continuum_path, args.normalized_path, args.labels_path]):
-        print("Error: One or more input files not found.")
-    else:
-        split_dataset_by_feh(args.continuum_path, args.normalized_path, args.labels_path, args.output_dir)
