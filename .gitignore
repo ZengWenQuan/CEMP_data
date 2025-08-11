@@ -1,6 +1,7 @@
 figures/
 files/
 split_data/
+unzipped_fits/
 unzipped_fits_100/
 unzipped_fits_100—/
 removed_with_rv_filtered.csv
